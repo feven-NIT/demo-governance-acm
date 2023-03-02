@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: todo-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app
+  namespace: todo-demo
+  labels:
+    app: todo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-app
+  template:
+    metadata:
+      labels:
+        app: todo-app
+    spec:
+      containers:
+        - name: todo-app
+          image: quay.io/feven/todoapp:latest
+          env:
+            - name: POSTGRESQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_DB
+            - name: POSTGRESQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_USER
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - name: app-config
+              mountPath: /deployments/config
+          ports:
+            - containerPort: 8080
+      volumes:
+        - name: app-config
+          configMap:
+            name: quarkus-app-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-app-service
+  namespace: todo-demo
+spec:
+  selector:
+    app: todo-app
+  ports:
+  - name: todo-app
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: todo-route
+  namespace: todo-demo
+spec:
+  to:
+    kind: Service
+    name: todo-app-service
+    weight: 100
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge

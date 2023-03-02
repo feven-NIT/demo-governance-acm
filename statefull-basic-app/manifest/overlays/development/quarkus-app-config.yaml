@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quarkus-app-config
+  namespace: todo-demo
+data:
+  application.properties: |-
+    quarkus.datasource.db-kind=postgresql
+    quarkus.datasource.jdbc.url=jdbc:postgresql://postgres-service.todo-demo.svc.cluster.local:5432/${POSTGRESQL_DATABASE}
+    quarkus.hibernate-orm.database.generation=update

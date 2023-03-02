@@ -16,9 +16,17 @@ openssl s_client -connect test.apps.bm3.redhat.hpecic.net:443 -showcerts </dev/n
 
 # Demo
 
+Create the namespace for the policies and the placementrules
+
 ```shell
-oc new-project policy-governance
+oc apply -f manifest/namespaces.yaml
 ```
+
+
+```shell
+oc apply -f manifest/placementrule.yml
+```
+
 
 Click Governance on the left pane to navigate to the governance dashboard. Then, click Create policy. The Create policy page displays.
 

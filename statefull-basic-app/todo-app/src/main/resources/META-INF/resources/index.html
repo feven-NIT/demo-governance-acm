@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+      
+      h1 {
+        font-size: 36px;
+        font-weight: bold;
+        color: #333333;
+        margin: 20px 0;
+        text-align: center;
+      }
+      
+      form {
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        max-width: 600px;
+        padding: 20px;
+      }
+      
+      input[type="text"] {
+        border: none;
+        border-bottom: 1px solid #dddddd;
+        font-size: 24px;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+    li {
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        max-width: 600px;
+        position: relative;
+        }
+
+        li span.name {
+        font-size: 18px;
+        color: #333333;
+        align-self: flex-start;
+        }
+
+        li span.task {
+        font-size: 12px;
+        color: #333333;
+        align-self: flex-start;
+        }
+
+        button.delete {
+        background-color: #4ca;
+        border: none;
+        color: white;
+        padding: 4px 8px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        }
+
+
+            
+      input[type="submit"] {
+        background-color: #333333;
+        border: none;
+        border-radius: 5px;
+        color: #ffffff;
+        font-size: 18px;
+        padding: 10px;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      input[type="submit"]:hover {
+        background-color: #222222;
+      }
+      button.submit {
+        background-color: #4CAF50; /* Green background */
+        border: none; /* Remove borders */
+        color: white; /* White text */
+        padding: 12px 24px; /* Some padding */
+        font-size: 16px; /* Set a font size */
+        cursor: pointer; /* Pointer/hand icon */
+        border-radius: 5px; /* Rounded corners */
+      }
+
+    /* Add a hover effect */
+     button.submit:hover {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+      }
+
+      button.delete {
+        background-color: #4ca; /* Green background */
+        border: none; /* Remove borders */
+        color: white; /* White text */
+        padding: 4px 8px; /* Some padding */
+        font-size: 16px; /* Set a font size */
+        cursor: pointer; /* Pointer/hand icon */
+        border-radius: 5px; /* Rounded corners */
+        float: right
+      }
+
+          /* Add a hover effect */
+     button.delete:hover {
+        background-color: #4ca; /* Green */
+        border: none;
+        color: white;
+        padding: 6px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+      }
+
+
+
+      input {
+        margin-bottom: 20px;
+      }
+
+      
+    </style>
+  </head>
+    <body>
+      <h1>Todo List <span id="destination"></span> </h1>
+      
+      <form id="add-task-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" />
+        <br />
+        <label for="task">Task:</label>
+        <input type="text" id="task" name="task" />
+        <br />
+        <button type="submit" class="submit">Add Task</button>
+      </form>
+  
+      <ul id="todo-list"></ul>
+  
+      <script>
+        const destinationSpan = document.getElementById("destination");
+        fetch("/todo/destination")
+                .then(response => response.text())
+                .then(destination => destinationSpan.innerText = destination);
+        const todoList = document.getElementById("todo-list");
+        const addTaskForm = document.getElementById("add-task-form");
+  
+        function renderTodoItem(todo) {
+            const li = document.createElement("li");
+
+            const nameSpan = document.createElement("span");
+            nameSpan.className = "name";
+            nameSpan.innerText = todo.name;
+
+            const taskSpan = document.createElement("span");
+            taskSpan.className = "task";
+            taskSpan.innerText = todo.task;
+
+            const deleteButton = document.createElement("button");
+            deleteButton.innerText = "Delete";
+            deleteButton.className = "delete";
+            deleteButton.onclick = () => deleteTask(li.getAttribute("data-id")); // pass id attribute to deleteTask function
+
+            li.setAttribute("data-id", todo.id); // add id attribute to li element
+            li.appendChild(nameSpan);
+            li.appendChild(document.createElement("br"));
+            li.appendChild(taskSpan);
+            li.appendChild(deleteButton);
+
+            todoList.insertBefore(li, todoList.firstChild);
+        }
+
+  
+        function deleteTask(id) {
+            fetch(`/todo/${id}`, {
+                method: "DELETE",
+            }).then(() => {
+                // remove the deleted task from the list
+                const taskElement = document.querySelector(`li[data-id="${id}"]`); // find li element with matching id attribute
+                taskElement.remove();
+            });
+        }
+
+  
+        fetch("/todo")
+          .then((response) => response.json())
+          .then((data) => data.forEach(renderTodoItem));
+  
+        addTaskForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const name = document.getElementById("name").value;
+          const task = document.getElementById("task").value;
+          const todo = { name, task };
+  
+          fetch("/todo", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(todo),
+          })
+            .then((response) => response.json())
+            .then(renderTodoItem)
+            .catch(console.error);
+  
+          addTaskForm.reset();
+        });
+      </script>
+    </body>
+  
+</html>

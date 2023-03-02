@@ -4,16 +4,38 @@ clusters:
     insecure-skip-tls-verify: true
     server: https://api.bm3.redhat.hpecic.net:6443
   name: api-bm3-redhat-hpecic-net:6443
+- cluster:
+    insecure-skip-tls-verify: true
+    server: https://api.ocp1.redhat.hpecic.net:6443
+  name: api-ocp1-redhat-hpecic-net:6443
 contexts:
 - context:
     cluster: api-bm3-redhat-hpecic-net:6443
     namespace: default
     user: kube:admin/api-bm3-redhat-hpecic-net:6443
   name: default/api-bm3-redhat-hpecic-net:6443/kube:admin
-current-context: default/api-bm3-redhat-hpecic-net:6443/kube:admin
+- context:
+    cluster: api-ocp1-redhat-hpecic-net:6443
+    namespace: default
+    user: kube:admin/api-ocp1-redhat-hpecic-net:6443
+  name: default/api-ocp1-redhat-hpecic-net:6443/kube:admin
+- context:
+    cluster: api-bm3-redhat-hpecic-net:6443
+    namespace: policy-governance
+    user: kube:admin/api-bm3-redhat-hpecic-net:6443
+  name: policy-governance/api-bm3-redhat-hpecic-net:6443/kube:admin
+- context:
+    cluster: api-ocp1-redhat-hpecic-net:6443
+    namespace: policy-governance
+    user: kube:admin/api-ocp1-redhat-hpecic-net:6443
+  name: policy-governance/api-ocp1-redhat-hpecic-net:6443/kube:admin
+current-context: policy-governance/api-ocp1-redhat-hpecic-net:6443/kube:admin
 kind: Config
 preferences: {}
 users:
 - name: kube:admin/api-bm3-redhat-hpecic-net:6443
   user:
     token: sha256~dRTFWh4LtHS5Ue6Pk0rGhB1n5KabBSvl2WgzrDGDQBw
+- name: kube:admin/api-ocp1-redhat-hpecic-net:6443
+  user:
+    token: sha256~SC1TrMdCV76YoxzzZtGQ9jrkeUxDC1x_C9dEp0mk62c
