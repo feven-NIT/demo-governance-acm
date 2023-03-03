@@ -1,6 +1,7 @@
 kind: Kustomization
+
 bases:
- - ../../base
+  - ../../base
 resources:
-- quarkus-app-config.yaml
+  - quarkus-app-config.yaml
 namePrefix: prod-
