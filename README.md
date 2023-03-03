@@ -15,7 +15,7 @@ In both the Name and Namespace fields, type todo-demo. Applications from the loc
 cluster require a namespace for every application to contain application resources on
 the managed clusters.
 
-![Alt text](./imagees/../images/2-Application-select-git.png)
+![Alt text](./images/2-Application-select-git.png)
 
  Click Repository location for resources and select Git for the repository type for your
 deployable resources.
@@ -28,12 +28,15 @@ Complete the following fields
 | Branch     | main              |
 | Path | statefull-basic-app/manifest/overlays/development |
 
+![Alt text](./images/3-Application-complete-path.png)
+
 Then in the Select clusters for application deployment section 
 
 | Label    | Value                          |
 |----------------|--------------------------------|
 | environment          | dev   |
 
+![Alt text](./images/4-Application-placement-rule.png)
 
 Then click on Add another repository
 
@@ -53,6 +56,15 @@ Then in the Select clusters for application deployment section
 |----------------|--------------------------------|
 | environment          | prod   |
 
+
+After few seconds you can see the topology view
+![Alt text](./images/5-Application-Topology.png)
+
+And check that you have your application on both cluster
+
+![Alt text](./imagees/../images/6-Application-todo-list-dev.png)
+
+![Alt text](./imagees/../images/7-Application-app-prod.png)
 
 
 
