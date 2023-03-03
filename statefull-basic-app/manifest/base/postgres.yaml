@@ -73,4 +73,15 @@ spec:
     port: 5432
     targetPort: 5432
   type: ClusterIP
-
+---
+apiVersion: v1
+data:
+  POSTGRES_DB: dGFzaw==
+  POSTGRES_PASSWORD: bXlzZWNyZXRwYXNzd29yZA==
+  POSTGRES_PORT: NTQzMg==
+  POSTGRES_USER: dGFzay11c2Vy
+kind: Secret
+metadata:
+  name: postgres-credentials
+  namespace: todo-demo
+type: Opaque
