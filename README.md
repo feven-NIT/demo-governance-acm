@@ -73,6 +73,8 @@ And check that you have your application on both cluster
 # Deploying and Managing Policies for Multiple Clusters with RHACM        
 ## Prepare
 
+NOTE: switch to bm3
+
 Update ca certificate to have an EOF < 1000 hours (for demo purpose)
 
 ```shell
@@ -84,6 +86,8 @@ openssl s_client -connect test.apps.bm3.redhat.hpecic.net:443 -showcerts </dev/n
 ```
 
 ## Demo
+
+NOTE: switch back to ocp1
 
 Create the namespace for the policies and the placementrules
 
@@ -148,3 +152,4 @@ default-ingress-certificate.sh
 
 # clean
 
+Delete Polocy policy-certificatepolicy in the console
