@@ -1,8 +1,65 @@
+# Deploying Applications Across Multiple Clusters with RHACM     
 
+## Prepare
 Add label cluster bm2 environment=dev 
 Add label cluster bm3 environment=prod 
 
-# Prepare
+## Demo
+
+On the left navigation bar, navigate to Applications, click Create application, and
+then click Subscription.
+
+![Alt text](./images/1-Application-create-sub.png)
+
+In both the Name and Namespace fields, type todo-demo. Applications from the local hub
+cluster require a namespace for every application to contain application resources on
+the managed clusters.
+
+![Alt text](./imagees/../images/2-Application-select-git.png)
+
+ Click Repository location for resources and select Git for the repository type for your
+deployable resources.
+
+Complete the following fields
+
+| Field Name     | Value                          |
+|----------------|--------------------------------|
+| URL          | https://github.com/feven-redhat/demo-governance-acm.git       |
+| Branch     | main              |
+| Path | statefull-basic-app/manifest/overlays/development |
+
+Then in the Select clusters for application deployment section 
+
+| Label    | Value                          |
+|----------------|--------------------------------|
+| environment          | dev   |
+
+
+Then click on Add another repository
+
+and repeat the same step by changing overlays and the label
+
+Complete the following fields
+
+| Field Name     | Value                          |
+|----------------|--------------------------------|
+| URL          | https://github.com/feven-redhat/demo-governance-acm.git       |
+| Branch     | main              |
+| Path | statefull-basic-app/manifest/overlays/production |
+
+Then in the Select clusters for application deployment section 
+
+| Label    | Value                          |
+|----------------|--------------------------------|
+| environment          | prod   |
+
+
+
+
+
+
+# Deploying and Managing Policies for Multiple Clusters with RHACM        
+## Prepare
 
 Update ca certificate to have an EOF < 1000 hours (for demo purpose)
 
@@ -14,7 +71,7 @@ short-new-certificate.sh
 openssl s_client -connect test.apps.bm3.redhat.hpecic.net:443 -showcerts </dev/null 2>/dev/null | openssl x509 -noout -enddate
 ```
 
-# Demo
+## Demo
 
 Create the namespace for the policies and the placementrules
 
