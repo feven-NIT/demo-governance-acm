@@ -1,6 +1,6 @@
 kind: Kustomization
 resources:
-  - ../../postgres.yaml  
-  - ../../todo-app.yaml
+  - ../../base/postgres.yaml  
+  - ../../base/todo-app.yaml
   - quarkus-app-config.yaml
 namePrefix: dev-
